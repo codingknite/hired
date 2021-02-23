@@ -1,0 +1,44 @@
+main {
+  width: 100%;
+}
+
+header {
+  height: 15vh;
+}
+
+.search-bar {
+  display: flex;
+  margin: 2rem;
+}
+
+.job-listing {
+  border: 3px solid orange;
+  width: 50%;
+
+  .ad-info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .job-title,
+  .tags {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .logo {
+    width: 7rem;
+    height: 7rem;
+
+    .company-logo {
+      max-width: 100%;
+    }
+  }
+}
+
+footer {
+  width: 50%;
+  margin-top: 3vh;
+  display: flex;
+  justify-content: space-between;
+}
