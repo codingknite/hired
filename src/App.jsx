@@ -1,12 +1,14 @@
-import "./App.css";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./components/HomePage";
+import "./App.scss";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <h1>Hello World!</h1>
-      <h2>Hired!</h2>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </>
   );
 }
-
-export default App;
