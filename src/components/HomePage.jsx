@@ -4,24 +4,25 @@ import * as FaIcons from "react-icons/fa";
 import * as GrIcons from "react-icons/gr";
 import testData from "../data/mockGithubJobs";
 import Spinner from "./Spinner";
-import axios from "axios";
 
 export default function HomePage() {
   const isMounted = useRef(false);
   const [jobListings, setJobListings] = useState(testData);
-  const [test, setTest] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     isMounted.current = true;
     async function getJobListings() {
       try {
-        const response = await axios("https://jobs.github.com/positions.json");
+        const response = await fetch(
+          `https://github-api-next.vercel.app/api/positions?page=${pageNumber}`
+        );
 
-        if (response) {
-          // const data = await response.json();
-          if (isMounted.current) setTest(response.data);
+        if (response.ok) {
+          const data = await response.json();
+          if (isMounted.current) setJobListings(data.data);
         } else {
           throw response;
         }
@@ -32,21 +33,31 @@ export default function HomePage() {
         if (isMounted.current) setLoading(false);
       }
     }
-
     getJobListings();
+    window.scrollTo(0, 0);
+
     return () => {
       isMounted.current = false;
     };
-  }, []);
+  }, [pageNumber]);
 
-  console.log(test);
   const generateDate = (date) => {
     const splitDate = date.split(" ");
     return `${splitDate[0]}, ${splitDate[1]} ${splitDate[2]}`;
   };
 
-  // if (error) throw error;
-  // if (loading) return <Spinner />;
+  const handlePrev = () => {
+    setPageNumber((pageNumber) => pageNumber - 1);
+  };
+
+  const handleNext = () => {
+    setPageNumber((pageNumber) => pageNumber + 1);
+  };
+
+  console.log(pageNumber);
+
+  if (error) throw error;
+  if (loading) return <Spinner />;
   return (
     <main>
       <header className="header">
@@ -119,17 +130,18 @@ export default function HomePage() {
         </section>
       ))}
 
-      <footer>
+      <section className="nav-buttons">
         <div>
           <GrIcons.GrPrevious />
-          <button type="submit">Prev</button>
+          <button disabled={pageNumber > 1 ? false : true} onClick={handlePrev}>
+            Prev
+          </button>
         </div>
-        <p>Made By Jowel</p>
         <div>
-          <button type="submit">Next</button>
+          <button onClick={handleNext}>Next</button>
           <GrIcons.GrNext />
         </div>
-      </footer>
+      </section>
     </main>
   );
 }
