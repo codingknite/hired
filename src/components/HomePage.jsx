@@ -39,7 +39,6 @@ export default function HomePage() {
   const [searchJobListings, setSearchJobListings] = useState(null);
   const [searchLoading, setSearchLoading] = useState(true);
   const [searchError, setSearchError] = useState(null);
-  const [searchPageNumber, setSearchPageNumber] = useState(1);
   const [searchTerms, setSearchTerms] = useState(searchObject);
   const [selectedTerms, setSelectedTerms] = useState(termsObject);
 
@@ -218,7 +217,7 @@ export default function HomePage() {
             <div className="tag">
               {selectedTerms.jobtype}{" "}
               <span onClick={removeTag} id="jobtype">
-                <MdIcons.MdCancel value="jobtype" />
+                <MdIcons.MdCancel />
               </span>
             </div>
           ) : (
