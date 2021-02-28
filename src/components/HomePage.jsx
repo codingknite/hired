@@ -6,6 +6,7 @@ import Spinner from "./Spinner";
 import Header from "./Header";
 import JobListings from "./JobListings";
 import useFetch from "../services/useFetch";
+import urlConstructor from "../services/urLConstructor";
 
 // form validation
 const validate = (values) => {
@@ -17,6 +18,7 @@ const validate = (values) => {
 };
 
 export default function HomePage() {
+  // initial url for search form => returns empty array
   const initUrl = `https://github-api-next.vercel.app/api/positions?description=none`;
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -37,23 +39,7 @@ export default function HomePage() {
   });
 
   const fetchSearchJobs = (values) => {
-    const { keyword, location, jobtype } = values;
-    const baseUrl = `https://github-api-next.vercel.app/api/positions?description=${keyword}`;
-    let url;
-
-    if (location && jobtype) {
-      const _jobtype =
-        jobtype === "FullTime" ? "&full_time=true" : "&part_time=true";
-      url = baseUrl + _jobtype + `&location=${location}`;
-    } else if (location) {
-      url = baseUrl + `&location=${location}`;
-    } else if (jobtype) {
-      const _jobtype =
-        jobtype === "FullTime" ? "&full_time=true" : "&part_time=true";
-      url = baseUrl + _jobtype;
-    } else {
-      url = baseUrl;
-    }
+    const url = urlConstructor(values);
     setSearchUrl(url);
   };
 
@@ -65,7 +51,7 @@ export default function HomePage() {
     `https://github-api-next.vercel.app/api/positions?page=${pageNumber}`
   );
 
-  let {
+  const {
     data: searchJobListings,
     loading: searchLoading,
     error: searchError,
@@ -108,9 +94,9 @@ export default function HomePage() {
           <div>
             <GrIcons.GrPrevious />
             <button
-              disabled={pageNumber > 1 ? false : true}
+              disabled={pageNumber < 1}
               onClick={() => {
-                setPageNumber((pageNumber) => pageNumber - 1);
+                setPageNumber(pageNumber - 1);
               }}
             >
               Prev
@@ -119,7 +105,7 @@ export default function HomePage() {
           <div>
             <button
               onClick={() => {
-                setPageNumber((pageNumber) => pageNumber + 1);
+                setPageNumber(pageNumber + 1);
               }}
             >
               Next
@@ -131,6 +117,7 @@ export default function HomePage() {
     );
   };
 
+  console.log(searchJobListings);
   if (listingsError) throw listingsError;
   if (searchError) throw searchError;
 
@@ -147,7 +134,7 @@ export default function HomePage() {
             value={formik.values.keyword}
             onChange={formik.handleChange}
           />
-          {formik.errors.keyword ? <div>{formik.errors.keyword}</div> : null}
+          {formik.errors.keyword && <div>{formik.errors.keyword}</div>}
 
           <input
             type="text"
@@ -172,8 +159,11 @@ export default function HomePage() {
           <input type="submit" value="Search Jobs" />
         </form>
       </section>
-      {/* TODO => Think of condition to check whether searchedJobs have been populated */}
-      {searchJobListings ? <SearchedJobs /> : <DefaultJobListings />}
+      {Array.isArray(searchJobListings) && searchJobListings.length ? (
+        <SearchedJobs />
+      ) : (
+        <DefaultJobListings />
+      )}
     </main>
   );
 }

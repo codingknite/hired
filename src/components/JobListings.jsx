@@ -1,11 +1,7 @@
 import React from "react";
+import { format } from "date-fns";
 
 export default function JobListings({ jobListings }) {
-  const generateDate = (date) => {
-    const splitDate = date.split(" ");
-    return `${splitDate[0]}, ${splitDate[1]} ${splitDate[2]}`;
-  };
-
   return (
     <>
       {jobListings.map((job) => (
@@ -25,7 +21,7 @@ export default function JobListings({ jobListings }) {
           </div>
           <div className="job-title">
             <h1>{job.title}</h1>
-            <p>{generateDate(job.created_at)}</p>
+            <p>{format(new Date(job.created_at), "E, MMM io")}</p>
           </div>
           <div className="tags">
             <div className="cat">

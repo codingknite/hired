@@ -1,5 +1,6 @@
 import React from "react";
 import * as FaIcons from "react-icons/fa";
+import "./Header.scss";
 
 export default function Header() {
   return (
@@ -17,7 +18,7 @@ export default function Header() {
           </div>
         </div>
         <div className="slogan">
-          <h2>JOB BOARD FOR DEVELOPERS AND CREATIVE PROS</h2>
+          <h2>job board for developers and creative pros</h2>
         </div>
       </header>
     </>
