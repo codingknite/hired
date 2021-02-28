@@ -117,7 +117,6 @@ export default function HomePage() {
     );
   };
 
-  console.log(searchJobListings);
   if (listingsError) throw listingsError;
   if (searchError) throw searchError;
 

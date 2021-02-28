@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
-
+import JobDescription from "./JobDescription";
 export default function JobListings({ jobListings }) {
+  const [jobId, setJobId] = useState(null); 
+
+  /*
+   * Going to implement Job Description Page Tomorrow => Too tired :(
+   */
   return (
     <>
       {jobListings.map((job) => (
-        <section className="job-listing" key={job.id}>
+        <section
+          className="job-listing"
+          key={job.id}
+          onClick={() => {
+            setJobId(job.id);
+          }}
+        >
           <div className="ad-info">
             <div className="logo">
               <img
