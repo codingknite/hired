@@ -7,7 +7,7 @@ export default function Header() {
     <>
       <header className="header">
         <div className="project-logo">
-          <h1 className="logo-text">H I R E D!</h1>
+          <h1 className="logo-text">h i r e d!</h1>
         </div>
         <div className="nav-bar">
           <div className="remote-button">
