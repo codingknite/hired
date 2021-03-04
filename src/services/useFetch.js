@@ -7,6 +7,7 @@ export default function useFetch(url) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!url) return;
         isMounted.current = true;
         async function fetchData() {
             try {
