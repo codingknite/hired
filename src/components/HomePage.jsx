@@ -7,7 +7,6 @@ import Header from "./Header";
 import JobListings from "./JobListings";
 import useFetch from "../services/useFetch";
 import urlConstructor from "../services/urLConstructor";
-import { Link } from "react-router-dom";
 
 // form validation
 const validate = (values) => {
@@ -50,8 +49,6 @@ export default function HomePage() {
   );
 
   const { data: searchJobListings, error: searchError } = useFetch(searchUrl);
-
-  console.log(searchJobListings);
 
   function refreshPage() {
     window.location.reload();
