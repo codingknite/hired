@@ -1,147 +1,165 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
+import { useFormik } from "formik";
 import "./HomePage.scss";
-import * as FaIcons from "react-icons/fa";
 import * as GrIcons from "react-icons/gr";
-import testData from "../data/mockGithubJobs";
 import Spinner from "./Spinner";
+import Header from "./Header";
+import JobListings from "./JobListings";
+import useFetch from "../services/useFetch";
+import urlConstructor from "../services/urLConstructor";
+
+// form validation
+const validate = (values) => {
+  const errors = {};
+  if (!values.keyword) {
+    errors.keyword = "Keyword is Required";
+  }
+  return errors;
+};
 
 export default function HomePage() {
-  const isMounted = useRef(false);
-  const [jobListings, setJobListings] = useState(testData);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
+  const [searchUrl, setSearchUrl] = useState(null);
 
-  useEffect(() => {
-    isMounted.current = true;
-    async function getJobListings() {
-      try {
-        const response = await fetch(
-          `https://github-api-next.vercel.app/api/positions?page=${pageNumber}`
-        );
+  const formik = useFormik({
+    initialValues: {
+      keyword: "",
+      location: "",
+      jobtype: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      fetchSearchJobs(values);
+      formik.values.keyword = "";
+      formik.values.location = "";
+    },
+  });
 
-        if (response.ok) {
-          const data = await response.json();
-          if (isMounted.current) setJobListings(data.data);
-        } else {
-          throw response;
-        }
-      } catch (error) {
-        console.error("There Was An Error => ", error);
-        if (isMounted.current) setError(error);
-      } finally {
-        if (isMounted.current) setLoading(false);
-      }
-    }
-    getJobListings();
-    window.scrollTo(0, 0);
-
-    return () => {
-      isMounted.current = false;
-    };
-  }, [pageNumber]);
-
-  const generateDate = (date) => {
-    const splitDate = date.split(" ");
-    return `${splitDate[0]}, ${splitDate[1]} ${splitDate[2]}`;
+  const fetchSearchJobs = (values) => {
+    const url = urlConstructor(values);
+    setSearchUrl(url);
   };
 
-  const handlePrev = () => {
-    setPageNumber((pageNumber) => pageNumber - 1);
+  const {
+    data: jobListings,
+    loading: listingsLoading,
+    error: listingsError,
+  } = useFetch(
+    `https://github-api-next.vercel.app/api/positions?page=${pageNumber}`
+  );
+
+  const { data: searchJobListings, error: searchError } = useFetch(searchUrl);
+
+  function refreshPage() {
+    window.location.reload();
+  }
+
+  const SearchedJobs = () => {
+    return searchJobListings.length ? (
+      <>
+        <JobListings jobListings={searchJobListings} />
+        <div>
+          <button
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            Back To Search
+          </button>
+
+          <button
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            Go Back Home
+          </button>
+        </div>
+      </>
+    ) : (
+      <>
+        <h2>Looks like we found nothing from this query</h2>
+        <p>Try another search </p>
+        <button onClick={refreshPage}>Go back home</button>
+      </>
+    );
   };
 
-  const handleNext = () => {
-    setPageNumber((pageNumber) => pageNumber + 1);
+  const DefaultJobListings = () => {
+    return listingsLoading ? (
+      <Spinner />
+    ) : (
+      <>
+        <JobListings jobListings={jobListings} />
+        <section className="nav-buttons">
+          <div>
+            <GrIcons.GrPrevious />
+            <button
+              disabled={pageNumber < 1}
+              onClick={() => {
+                setPageNumber(pageNumber - 1);
+              }}
+            >
+              Prev
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                setPageNumber(pageNumber + 1);
+              }}
+            >
+              Next
+            </button>
+            <GrIcons.GrNext />
+          </div>
+        </section>
+      </>
+    );
   };
 
-  console.log(pageNumber);
+  if (listingsError) throw listingsError;
+  if (searchError) throw searchError;
 
-  if (error) throw error;
-  if (loading) return <Spinner />;
   return (
     <main>
-      <header className="header">
-        <div className="project-logo">
-          <h1 className="logo-text">H I R E D!</h1>
-        </div>
-        <div className="nav-bar">
-          <div className="remote-button">
-            <p>remote jobs</p>
-          </div>
-          <div className="darkmode-toggle">
-            <FaIcons.FaMoon />
-          </div>
-        </div>
-        <div className="slogan">
-          <h2>JOB BOARD FOR DEVELOPERS AND CREATIVE PROS</h2>
-        </div>
-      </header>
+      <Header />
+      <section className="search-form">
+        <form className="search-bar" onSubmit={formik.handleSubmit}>
+          <input
+            type="text"
+            name="keyword"
+            id="keyword"
+            placeholder="Keyword e.g java"
+            value={formik.values.keyword}
+            onChange={formik.handleChange}
+          />
+          {formik.errors.keyword && <div>{formik.errors.keyword}</div>}
 
-      <section className="search-bar">
-        <div>
-          <input type="input" placeholder="Keywords e.g java" />
-        </div>
-        <div>
-          <input type="input" placeholder="Location" />
-        </div>
-        <div>
-          <select name="type" id="job-type">
-            <option value="Job Type">Job Type</option>
+          <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            id="location"
+            value={formik.values.location}
+            onChange={formik.handleChange}
+          />
+
+          <select
+            name="jobtype"
+            id="jobtype"
+            value={formik.values.jobtype}
+            onChange={formik.handleChange}
+          >
+            <option value="">Choose Job Type</option>
             <option value="FullTime">FullTime</option>
             <option value="PartTime">PartTime</option>
           </select>
-        </div>
-        <div>
-          <button type="submit">Search Jobs</button>
-        </div>
-        <div></div>
-      </section>
 
-      {jobListings.map((job) => (
-        <section className="job-listing" key={job.id}>
-          <div className="ad-info">
-            <div className="logo">
-              <img
-                src={job.company_logo}
-                alt="Company Logo"
-                className="company-logo"
-              />
-            </div>
-            <h2>{job.company}</h2>
-            <a href={job.company_url ? `${job.company_url}` : "#"}>
-              Visit Company Website
-            </a>
-          </div>
-          <div className="job-title">
-            <h1>{job.title}</h1>
-            <p>{generateDate(job.created_at)}</p>
-          </div>
-          <div className="tags">
-            <div className="cat">
-              <p>software dev</p>
-            </div>
-            <div className="cat">
-              <p>{job.type}</p>
-            </div>
-            <div className="cat">
-              <p>{job.location}</p>
-            </div>
-          </div>
-        </section>
-      ))}
-
-      <section className="nav-buttons">
-        <div>
-          <GrIcons.GrPrevious />
-          <button disabled={pageNumber > 1 ? false : true} onClick={handlePrev}>
-            Prev
-          </button>
-        </div>
-        <div>
-          <button onClick={handleNext}>Next</button>
-          <GrIcons.GrNext />
-        </div>
+          <input type="submit" value="Search Jobs" />
+        </form>
       </section>
+      {searchJobListings ? <SearchedJobs /> : <DefaultJobListings />}
     </main>
   );
 }

@@ -6,9 +6,23 @@ header {
   height: 15vh;
 }
 
-.search-bar {
-  display: flex;
+.search-form {
   margin: 2rem;
+  padding: 1rem;
+  .search-bar {
+    display: flex;
+  }
+
+  .term-tags {
+    margin: 1rem;
+    display: flex;
+
+    .tag {
+      margin-left: 1rem;
+      border: 2px solid black;
+      padding: 0.2rem;
+    }
+  }
 }
 
 .job-listing {
