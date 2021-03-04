@@ -7,6 +7,7 @@ import Header from "./Header";
 import JobListings from "./JobListings";
 import useFetch from "../services/useFetch";
 import urlConstructor from "../services/urLConstructor";
+import { Link } from "react-router-dom";
 
 // form validation
 const validate = (values) => {
@@ -18,11 +19,8 @@ const validate = (values) => {
 };
 
 export default function HomePage() {
-  // initial url for search form => returns empty array
-  const initUrl = `https://github-api-next.vercel.app/api/positions?description=none`;
-
   const [pageNumber, setPageNumber] = useState(1);
-  const [searchUrl, setSearchUrl] = useState(initUrl);
+  const [searchUrl, setSearchUrl] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -51,16 +49,16 @@ export default function HomePage() {
     `https://github-api-next.vercel.app/api/positions?page=${pageNumber}`
   );
 
-  const {
-    data: searchJobListings,
-    loading: searchLoading,
-    error: searchError,
-  } = useFetch(searchUrl);
+  const { data: searchJobListings, error: searchError } = useFetch(searchUrl);
+
+  console.log(searchJobListings);
+
+  function refreshPage() {
+    window.location.reload();
+  }
 
   const SearchedJobs = () => {
-    return searchLoading ? (
-      <Spinner />
-    ) : (
+    return searchJobListings.length ? (
       <>
         <JobListings jobListings={searchJobListings} />
         <div>
@@ -80,6 +78,12 @@ export default function HomePage() {
             Go Back Home
           </button>
         </div>
+      </>
+    ) : (
+      <>
+        <h2>Looks like we found nothing from this query</h2>
+        <p>Try another search </p>
+        <button onClick={refreshPage}>Go back home</button>
       </>
     );
   };
@@ -158,11 +162,7 @@ export default function HomePage() {
           <input type="submit" value="Search Jobs" />
         </form>
       </section>
-      {Array.isArray(searchJobListings) && searchJobListings.length ? (
-        <SearchedJobs />
-      ) : (
-        <DefaultJobListings />
-      )}
+      {searchJobListings ? <SearchedJobs /> : <DefaultJobListings />}
     </main>
   );
 }
