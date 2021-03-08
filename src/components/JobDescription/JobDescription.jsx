@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import useFetch from "../services/useFetch";
+import useFetch from "../../services/useFetch";
 import * as MdIcons from "react-icons/md";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 
 export default function JobDescription() {
   const { jobId } = useParams();
