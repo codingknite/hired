@@ -1,29 +1,50 @@
 import styled from 'styled-components'
-import { COLORS as colors } from '../../styles/rootStyles'
+import { COLORS as colors, QUERIES as queries } from '../../styles/rootStyles'
+import banner from '../../img/banner.webp'
 
 export const HeaderSection = styled.header`
-
-    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap'); 
-
-    height: 50vh;
-    background-image: url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1500&q=80');
-    background-repeat: no-repeat;
-    background-size: cover;
-    max-width: 100%;
-    color: ${colors.white};
-
     .header-info {
-        display: flex;    
-        flex-direction: column;
-        height: 100%;
-    }
-    .project-logo { 
-        height: 50%;
-        font-family: 'Great Vibes';
+        min-height: 55vh;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5)),
+        url(${banner});
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        color: ${colors.white};
 
+        h1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 2rem;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.125rem;
+
+        }
+
+        h2 {
+            align-self: center;
+            width: 80%;
+            text-align: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+        }
     }
 
-    .slogan {
-        align-self: center;
+    @media ${queries.medium} {
+        .header-info {
+            h1 {
+                font-size: 2.1875rem;
+                margin: 1rem;
+            }
+
+            h2 {
+                width: 90%;
+                font-size: 2rem;
+            }
+        }
     }
 `

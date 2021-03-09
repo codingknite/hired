@@ -38,7 +38,16 @@ export const JobsSection = styled.section`
             }
 
             #search {
-                background: ${colors.lightBlue}
+                background: ${colors.lightBlue};
+                cursor: pointer;
+
+                
+            }
+
+            .formik-error {
+                color: red;
+                list-style: inside;
+                text-align: center;
             }
         }
     }
@@ -66,7 +75,18 @@ export const JobsSection = styled.section`
     @media ${queries.medium} {
         .search-form {
             form  {
-                width: 100%;
+                width: 80%;
+                flex-direction: column;
+
+                #keyword,
+                #location, 
+                #jobtype, 
+                #search {
+                    width: 100%;
+                    padding: 1rem;
+                    margin-left: 0rem;
+                    margin-top: 1rem;
+                }
             }
         }
     }
@@ -105,22 +125,9 @@ export const DefaultJobs = styled.section`
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.5rem;
-        width: 8%;
+        padding: 0.7rem 2rem 0.7rem 2rem;
         border-radius: 2px;
         cursor: pointer;
-    }
-
-    @media ${queries.medium} {
-        button {
-            width: 12%;
-        }
-    }
-
-    @media ${queries.small} {
-        button {
-            width: 25%;
-        }
     }
 `
 

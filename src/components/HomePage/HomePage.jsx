@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as GrIcons from "react-icons/gr";
 import Spinner from "../Spinner";
 import Header from "../Header/Header";
 import JobListings from "../JobListings/JobListings";
@@ -99,7 +98,6 @@ export default function HomePage() {
             }}
             disabled={pageNumber < 2}
           >
-            <GrIcons.GrPrevious />
             Prev
           </button>
           <button
@@ -108,7 +106,6 @@ export default function HomePage() {
             }}
           >
             Next
-            <GrIcons.GrNext />
           </button>
         </DefaultJobs>
       </>

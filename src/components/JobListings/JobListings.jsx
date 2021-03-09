@@ -44,7 +44,7 @@ export default function JobListings({ jobListings }) {
             <p className="job-date">
               {format(new Date(job.created_at), "E, MMM io")}
             </p>
-          </MainContainer>
+          </MainContainer>   
         </StyledLink>
       ))}
     </>
