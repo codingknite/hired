@@ -14,6 +14,18 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     background: ${COLORS.white};
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  button {
+    background: #0a2463;
+    color: ${COLORS.white};
+
+    &:hover {
+      transform: scale(1.05);
+      transition: ease-in-out 500ms; 
+    }
   }
   
 `;
