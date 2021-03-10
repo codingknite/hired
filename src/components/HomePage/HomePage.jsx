@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { Formik, Form, useField } from "formik";
-import Spinner from "../Spinner";
 import Header from "../Header/Header";
-import JobListings from "../JobListings/JobListings";
 import useFetch from "../../services/useFetch";
 import urlConstructor from "../../services/urLConstructor";
-import {
-  MainContainer,
-  JobsSection,
-  DefaultJobs,
-  SearchResults,
-} from "./styles";
+import { MainContainer, JobsSection } from "./styles";
+
+import SearchedJobs from "../SearchedJobs";
+import DefaultJobListings from "../DefaultJobListings";
 
 // form validation
 const validate = (values) => {
@@ -22,7 +18,6 @@ const validate = (values) => {
 };
 
 export default function HomePage() {
-  const [pageNumber, setPageNumber] = useState(1);
   const [searchUrl, setSearchUrl] = useState(null);
 
   const Input = ({ label, ...props }) => {
@@ -51,75 +46,12 @@ export default function HomePage() {
     setSearchUrl(url);
   };
 
-  const {
-    data: jobListings,
-    loading: listingsLoading,
-    error: listingsError,
-  } = useFetch(
-    `https://github-api-next.vercel.app/api/positions?page=${pageNumber}`
-  );
-
   const { data: searchJobListings, error: searchError } = useFetch(searchUrl);
 
   function refreshPage() {
     window.location.reload();
   }
 
-  const SearchedJobs = () => {
-    return searchJobListings.length ? (
-      <>
-        <JobListings jobListings={searchJobListings} />
-        <SearchResults>
-          <button
-            onClick={() => {
-              window.scrollTo(0, 0);
-            }}
-          >
-            Back To Search
-          </button>
-
-          <button onClick={refreshPage}>Go Back Home</button>
-        </SearchResults>
-      </>
-    ) : (
-      <SearchResults>
-        <div className="jobs-not-found">
-          <h2>Looks like we found nothing from this query</h2>
-          <p>Try another search </p>
-        </div>
-        <button onClick={refreshPage}>Go back home</button>
-      </SearchResults>
-    );
-  };
-
-  const DefaultJobListings = () => {
-    return listingsLoading ? (
-      <Spinner />
-    ) : (
-      <>
-        <JobListings jobListings={jobListings} />
-        <DefaultJobs>
-          <button
-            onClick={() => {
-              setPageNumber(pageNumber > 1 ? pageNumber - 1 : pageNumber);
-            }}
-            disabled={pageNumber < 2}
-          >
-            Prev
-          </button>
-          <button
-            onClick={() => {
-              setPageNumber(pageNumber + 1);
-            }}
-          >
-            Next
-          </button>
-        </DefaultJobs>
-      </>
-    );
-  };
-
-  if (listingsError) throw listingsError;
   if (searchError) throw searchError;
 
   return (
@@ -166,7 +98,11 @@ export default function HomePage() {
             </Form>
           </section>
         </Formik>
-        {searchJobListings ? <SearchedJobs /> : <DefaultJobListings />}
+        {searchJobListings ? (
+          <SearchedJobs joblisting={searchJobListings} refresh={refreshPage} />
+        ) : (
+          <DefaultJobListings />
+        )}
       </JobsSection>
     </MainContainer>
   );

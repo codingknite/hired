@@ -22,7 +22,6 @@ export const JobsSection = styled.section`
         justify-content: center;
 
         .form  {
-            width: 100%;
             padding: 1rem;
             display: flex;
 
@@ -58,7 +57,6 @@ export const JobsSection = styled.section`
 
         .search-form {
             .form  {
-                width: 90%;
                 padding: 0.75rem;
 
                 #keyword,
@@ -76,7 +74,6 @@ export const JobsSection = styled.section`
     @media ${queries.medium} {
         .search-form {
             .form  {
-                width: 80%;
                 flex-direction: column;
 
                 #keyword,
@@ -96,7 +93,6 @@ export const JobsSection = styled.section`
         width: 100%;
         .search-form {
             .form  {
-                width: 95%;
                 padding: 0.5rem;
                 flex-direction: column;
 
