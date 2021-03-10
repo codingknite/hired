@@ -93,7 +93,7 @@ export default function HomePage() {
               </Select>
 
               <button type="submit" id="search">
-                Submit
+                Search Jobs
               </button>
             </Form>
           </section>

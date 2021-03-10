@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage/HomePage";
 import JobDescription from "./components/JobDescription/JobDescription";
 import { createGlobalStyle } from "styled-components";
-import { COLORS } from "./styles/rootStyles";
+import { COLORS, QUERIES } from "./styles/rootStyles";
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -25,6 +25,10 @@ const GlobalStyles = createGlobalStyle`
     &:hover {
       transform: scale(1.05);
       transition: ease-in-out 500ms; 
+
+      @media ${QUERIES.medium} {
+        transform: scale(0);
+      }
     }
   }
   
