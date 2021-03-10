@@ -18,6 +18,7 @@ For this project I used:
 
 You can see the live version of the application [here](https://dailyweather.netlify.app)
 
+## Project 
 In the project directory, you can run:
 
 ### `npm start`
