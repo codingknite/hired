@@ -60,7 +60,8 @@ export const MainContainer = styled.main`
     .job-date {
         align-self: center;
         justify-self: flex-end;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
+        font-weight: bold;
     }
 
     @media ${queries.small} {
