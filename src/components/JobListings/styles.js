@@ -5,6 +5,7 @@ import { COLORS as colors, QUERIES as queries } from '../../styles/rootStyles'
 export const MainContainer = styled.main`
     
     border: 1px solid black;
+    border-radius: 3px;
     background: ${colors.gray};
     margin: 1rem 5rem 1rem 5rem;
     display: flex;
@@ -84,7 +85,7 @@ export const MainContainer = styled.main`
             }
 
             .job-title {
-                font-size: 0.9375rem;
+                font-size: 0.8125rem;
             }
 
             .job-tags {
@@ -96,6 +97,10 @@ export const MainContainer = styled.main`
                     font-size: 0.65rem;
                 }
             }
+        }
+
+        .job-date {
+            font-size: 0.6875rem;
         }
     }
 `
