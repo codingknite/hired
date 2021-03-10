@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
+import { Formik, Form, useField } from "formik";
 import Spinner from "../Spinner";
 import Header from "../Header/Header";
 import JobListings from "../JobListings/JobListings";
@@ -25,19 +25,26 @@ export default function HomePage() {
   const [pageNumber, setPageNumber] = useState(1);
   const [searchUrl, setSearchUrl] = useState(null);
 
-  const formik = useFormik({
-    initialValues: {
-      keyword: "",
-      location: "",
-      jobtype: "",
-    },
-    validate,
-    onSubmit: (values) => {
-      fetchSearchJobs(values);
-      formik.values.keyword = "";
-      formik.values.location = "";
-    },
-  });
+  const Input = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+      <>
+        <input className="text-input" {...field} {...props} />
+        {meta.touched && meta.error ? (
+          <div className="error">{meta.error}</div>
+        ) : null}
+      </>
+    );
+  };
+
+  const Select = ({ label, ...props }) => {
+    const [field] = useField(props);
+    return (
+      <>
+        <select {...field} {...props} />
+      </>
+    );
+  };
 
   const fetchSearchJobs = (values) => {
     const url = urlConstructor(values);
@@ -119,41 +126,46 @@ export default function HomePage() {
     <MainContainer>
       <Header />
       <JobsSection>
-        <section className="search-form">
-          <form className="search-bar" onSubmit={formik.handleSubmit}>
-            <input
-              type="text"
-              name="keyword"
-              id="keyword"
-              placeholder="Keyword e.g java"
-              value={formik.values.keyword}
-              onChange={formik.handleChange}
-            />
-            {formik.errors.keyword && <div>{formik.errors.keyword}</div>}
+        <Formik
+          initialValues={{
+            keyword: "",
+            location: "",
+            jobtype: "",
+          }}
+          validate={validate}
+          onSubmit={(values, { resetForm }) => {
+            fetchSearchJobs(values);
+            resetForm({ values: "" });
+          }}
+        >
+          <section className="search-form">
+            <Form className="form">
+              <Input
+                type="text"
+                name="keyword"
+                id="keyword"
+                placeholder="Keyword e.g java"
+              />
 
-            <input
-              type="text"
-              name="location"
-              placeholder="Location"
-              id="location"
-              value={formik.values.location}
-              onChange={formik.handleChange}
-            />
+              <Input
+                type="text"
+                name="location"
+                placeholder="Location"
+                id="location"
+              />
 
-            <select
-              name="jobtype"
-              id="jobtype"
-              value={formik.values.jobtype}
-              onChange={formik.handleChange}
-            >
-              <option value="">Choose Job Type</option>
-              <option value="FullTime">FullTime</option>
-              <option value="PartTime">PartTime</option>
-            </select>
+              <Select name="jobtype" id="jobtype">
+                <option value="">Choose Job Type</option>
+                <option value="FullTime">FullTime</option>
+                <option value="PartTime">PartTime</option>
+              </Select>
 
-            <input type="submit" value="Search Jobs" id="search" />
-          </form>
-        </section>
+              <button type="submit" id="search">
+                Submit
+              </button>
+            </Form>
+          </section>
+        </Formik>
         {searchJobListings ? <SearchedJobs /> : <DefaultJobListings />}
       </JobsSection>
     </MainContainer>

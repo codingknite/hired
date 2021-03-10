@@ -18,16 +18,17 @@ export const JobsSection = styled.section`
 
     .search-form {
         display: flex;
+        flex-direction: column;
         justify-content: center;
 
-        form  {
-            width: 90%;
+        .form  {
+            width: 100%;
             padding: 1rem;
             display: flex;
 
             #keyword,
-            #location, 
-            #jobtype, 
+            #location,
+            #jobtype,  
             #search {
                 width: 25%;
                 padding: 0.8rem;
@@ -56,7 +57,7 @@ export const JobsSection = styled.section`
         width: 90%;
 
         .search-form {
-            form  {
+            .form  {
                 width: 90%;
                 padding: 0.75rem;
 
@@ -74,7 +75,7 @@ export const JobsSection = styled.section`
 
     @media ${queries.medium} {
         .search-form {
-            form  {
+            .form  {
                 width: 80%;
                 flex-direction: column;
 
@@ -94,7 +95,7 @@ export const JobsSection = styled.section`
     @media ${queries.small} {
         width: 100%;
         .search-form {
-            form  {
+            .form  {
                 width: 95%;
                 padding: 0.5rem;
                 flex-direction: column;
