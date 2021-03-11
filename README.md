@@ -16,7 +16,7 @@ For this project I used:
 
 ## Live Site
 
-You can see the live version of the application [here](https://dailyweather.netlify.app)
+You can see the live version of the application [here](https://devhire.vercel.app)
 
 ## Project 
 In the project directory, you can run:
