@@ -27,7 +27,7 @@ export const HeaderSection = styled.header`
 
         h2 {
             align-self: center;
-            width: 80%;
+            width: 80%; 
             text-align: center;
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2.5rem;

@@ -28,7 +28,7 @@ export default function JobDescription() {
     <>
       <Main>
         <header onClick={navigateHome}>
-          <h1 className="logo-text">Hired</h1>
+          <h1 className="logo-text">Hire</h1>
         </header>
 
         <div className="back-button" onClick={navigateHome}>

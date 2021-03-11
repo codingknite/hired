@@ -45,6 +45,15 @@ export const Main = styled.main`
     }
 
     @media ${queries.small} {
+        header {
+            display: inline-block;
+            cursor: pointer;
+            .logo-text {
+                margin: 1.5rem;
+                font-size: 2.5rem;
+                font-family: 'Great Vibes';
+            }
+        }
         .back-button {
             button {
                 margin: 1rem;
