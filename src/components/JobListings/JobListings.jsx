@@ -37,7 +37,7 @@ export default function JobListings({ jobListings }) {
                   <p>{job.type}</p>
                 </div>
                 <div className="cat">
-                  <p>{formatName(job.location)}</p>
+                  <p>{job.location}</p>
                 </div>
               </div>
             </div>

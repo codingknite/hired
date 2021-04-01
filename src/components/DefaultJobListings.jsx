@@ -10,7 +10,7 @@ export default function DefaultJobListings() {
   const {
     data: jobListings,
     loading: listingsLoading,
-    error: listingsError,
+    error: listingsError, 
   } = useFetch(
     `https://github-api-next.vercel.app/api/positions?page=${pageNumber}`
   );

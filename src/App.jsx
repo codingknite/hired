@@ -20,7 +20,7 @@ const GlobalStyles = createGlobalStyle`
 
   button {
     background: #0a2463;
-    color: ${COLORS.white};
+    color: ${COLORS.white}; 
 
     &:hover {
       transform: scale(1.05);
