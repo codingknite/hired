@@ -28,6 +28,11 @@
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git add -A ."
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
